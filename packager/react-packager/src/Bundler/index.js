@@ -23,6 +23,7 @@ const declareOpts = require('../lib/declareOpts');
 const imageSize = require('image-size');
 const version = require('../../../../package.json').version;
 const denodeify = require('denodeify');
+const path = require('path');
 
 const {
   sep: pathSeparator,
