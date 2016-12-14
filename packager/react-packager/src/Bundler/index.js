@@ -761,7 +761,7 @@ function verifyRootExists(root) {
 function createModuleIdFactory() {
   let nextId = 0;
   const readSource = 'mobile-builder/moduleIds.json';
-  const fileToIdMap = JSON.parse(fs.readFileSync(path.resolve(readSource), "utf8"));
+  const fileToIdMap = fs.existsSync(path.resolve(readSource)) ? JSON.parse(fs.readFileSync(path.resolve(readSource), "utf8")) : {};
 
   var ids = Object.keys(fileToIdMap).map(function(key) {
     return fileToIdMap[key];
