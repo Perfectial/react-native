@@ -797,14 +797,28 @@ function verifyRootExists(root) {
 }
 
 function createModuleIdFactory() {
-  const fileToIdMap = Object.create(null);
   let nextId = 0;
-  return ({path: modulePath}) => {
-    if (!(modulePath in fileToIdMap)) {
-      fileToIdMap[modulePath] = nextId;
+  const readSource = 'mobile-builder/moduleIds.json';
+  const fileToIdMap = fs.existsSync(path.resolve(readSource)) ? JSON.parse(fs.readFileSync(path.resolve(readSource), "utf8")) : {};
+
+  var ids = Object.keys(fileToIdMap).map(function(key) {
+    return fileToIdMap[key];
+  });
+
+  if(ids.length > 0) {
+    nextId = Math.max(...ids) + 1;
+  }
+
+  function saveModuleIds() {
+    fs.writeFileSync(path.resolve(readSource), JSON.stringify(fileToIdMap), {"encoding":'utf8'});
+  }
+  return ({path}) => {
+    if (!(path in fileToIdMap)) {
+      fileToIdMap[path] = nextId;
+      saveModuleIds();
       nextId += 1;
     }
-    return fileToIdMap[modulePath];
+    return fileToIdMap[path];
   };
 }
 
