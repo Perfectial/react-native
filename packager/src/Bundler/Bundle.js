@@ -241,7 +241,8 @@ class Bundle extends BundleBase {
   getSourceMap(options: {excludeSource?: boolean}): MixedSourceMap {
     this.assertFinalized();
 
-    return this._sourceMapFormat === 'indexed'
+    // return this._sourceMapFormat === 'indexed'
+    return true
       ? this._getCombinedSourceMaps(options)
       : fromRawMappings(this.getModules()).toMap();
   }
